@@ -24,34 +24,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white min-h-screen h-full m-0 p-0 overflow-x-hidden`}>
-        {/* Background layer with light rays effect */}
+    <html lang="en" className="h-full dark">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen overflow-x-hidden relative`}>
         <LightRaysBackground 
           isBackground={true}
+          fixedLightSource={true}
           raysOrigin="top-center"
           raysColor="#FFFFFF"
-          raysSpeed={0.5}
+          raysSpeed={0.3}
           lightSpread={0.8}
-          rayLength={2}
-          fadeDistance={0.5}
+          rayLength={0.7}
+          fadeDistance={10}
           followMouse={false}
         />
         <LightRaysBackground 
           isBackground={true}
+          fixedLightSource={true}
           raysOrigin="bottom-center"
           raysColor="#FFFFFF"
-          raysSpeed={0.4}
+          raysSpeed={0.2}
           lightSpread={0.3}
-          rayLength={1}
+          rayLength={0.7}
           fadeDistance={0.1}
           followMouse={false}
         />
         
         {/* Content layer */}
-        <main className="relative z-10">
+        <div className="relative z-10">
           {children}
-        </main>
+        </div>
       </body>
     </html>
   );
