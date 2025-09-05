@@ -31,9 +31,9 @@ export default function RootLayout({
           fixedLightSource={true}
           raysOrigin="top-center"
           raysColor="#FFFFFF"
-          raysSpeed={0.3}
-          lightSpread={0.8}
-          rayLength={0.7}
+          raysSpeed={0.4}
+          lightSpread={0.7}
+          rayLength={0.5}
           fadeDistance={10}
           followMouse={false}
         />
@@ -42,10 +42,10 @@ export default function RootLayout({
           fixedLightSource={true}
           raysOrigin="bottom-center"
           raysColor="#FFFFFF"
-          raysSpeed={0.2}
-          lightSpread={0.3}
-          rayLength={0.7}
-          fadeDistance={0.1}
+          raysSpeed={0.4}
+          lightSpread={0.7}
+          rayLength={0.4}
+          fadeDistance={10}
           followMouse={false}
         />
         
