@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LightRaysBackground } from "@/components/ui/shadcn-io/light-rays-background"
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Orbitron, Syne_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -11,6 +11,18 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const syneMono = Syne_Mono({
+  variable: "--font-syne-mono",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -25,15 +37,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen overflow-x-hidden relative`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${syneMono.variable} font-sans antialiased bg-background text-foreground overflow-x-hidden relative`}>
         <LightRaysBackground 
           isBackground={true}
           fixedLightSource={true}
           raysOrigin="top-center"
           raysColor="#FFFFFF"
           raysSpeed={0.4}
-          lightSpread={0.7}
-          rayLength={0.5}
+          lightSpread={0.8}
+          rayLength={0.7}
           fadeDistance={10}
           followMouse={false}
         />
@@ -43,8 +55,8 @@ export default function RootLayout({
           raysOrigin="bottom-center"
           raysColor="#FFFFFF"
           raysSpeed={0.4}
-          lightSpread={0.7}
-          rayLength={0.4}
+          lightSpread={0.8}
+          rayLength={0.5}
           fadeDistance={10}
           followMouse={false}
         />

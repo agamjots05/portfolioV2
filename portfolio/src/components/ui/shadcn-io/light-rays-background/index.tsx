@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useEffect, useState, forwardRef } from "react";
-// @ts-ignore
 import { Renderer, Program, Triangle, Mesh } from "ogl";
 import { cn } from '@/lib/utils';
 

@@ -21,8 +21,8 @@ export function GlassCard({
       className={`rounded-xl transition-all duration-300 text-white ${className || ''}`}
       style={{
         // Enhanced glass effect with better translucency
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(1px) saturate(110%) contrast(115%)',
+        background: 'rgba(255, 255, 255,0.01)',
+        backdropFilter: 'blur(1px) saturate(110%) contrast(100%)',
         WebkitBackdropFilter: 'blur(16px) saturate(180%) contrast(120%)',
         
         // Subtle border for definition
