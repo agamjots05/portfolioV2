@@ -81,7 +81,7 @@ const experiences: Experience[] = [
     title: "Software Engineer",
     company: "SafeInbox",
     date: "Spring 2024",
-    description: "Developed a Gmail extension leveraging XGBoost and Logistic Regression models to detect phishing attempts in emails and URLs in real-time",
+    description: "Developed a Gmail Chrome extension leveraging XGBoost and Logistic Regression models to detect phishing attempts in emails and URLs in real-time",
     projectUrl: "https://github.com/Esmosaku/AI4ALL_6D", 
     skills: ["Python", "ML", "Chrome Extensions"]
   },
