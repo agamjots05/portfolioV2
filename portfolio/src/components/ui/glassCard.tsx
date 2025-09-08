@@ -1,11 +1,14 @@
 "use client"
 
-import * as React from "react"
+import { motion, HTMLMotionProps } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-  paddingX?: number
-  paddingY?: number
+interface GlassCardProps extends HTMLMotionProps<"div"> {
+  children: React.ReactNode;
+  paddingX?: number;
+  paddingY?: number;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export function GlassCard({ 
@@ -33,7 +36,13 @@ export function GlassCard({
   )
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ 
+        duration: 0.5,
+        ease: "easeOut"
+      }}
       className={`rounded-xl transition-all duration-300 text-white ${className || ''}`}
       style={{
         // Enhanced glass effect with better translucency
@@ -58,6 +67,6 @@ export function GlassCard({
       {...props}
     >
       {children}
-    </div>
+    </motion.div>
   )
 } 

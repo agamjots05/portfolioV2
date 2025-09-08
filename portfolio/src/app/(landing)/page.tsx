@@ -14,7 +14,7 @@ export default function Landing() {
         >
           <h1 className="font-bold">AGAMJOT SINGH</h1>
           <GooeyText
-            texts={["Open-Source Contributor", "CS @ SJSU", "Software Engineer", "Discus Thrower"]}
+            texts={[" ","CS @ SJSU", "Open-Source Contributor", "Software Engineer", "Discus Thrower Enthusiast"]}
             morphTime={5}
             cooldownTime={5}
           />

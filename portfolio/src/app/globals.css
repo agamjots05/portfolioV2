@@ -53,6 +53,16 @@
   --spacing: 0.25rem;
 }
 
+/* Global letter spacing */
+* {
+  letter-spacing: -0.05em !important;
+}
+
+/* Preserve wider spacing for headings if needed */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: normal;
+}
+
 .dark {
   --background: hsl(223.8136 0.0000% 3.9388%);
   --foreground: hsl(223.8136 0.0004% 98.0256%);
