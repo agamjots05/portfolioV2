@@ -22,74 +22,78 @@ export function GooeyText({
   const text2Ref = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
-    let textIndex = texts.length - 1;
-    let time = new Date();
-    let morph = 0;
-    let cooldown = cooldownTime;
+    let textIndex = 0;
+    let progress = 0;
+    let isMorphing = true;
+    let animationId: number;
+    let lastTime = performance.now();
 
     const setMorph = (fraction: number) => {
-      if (text1Ref.current && text2Ref.current) {
-        text2Ref.current.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-        text2Ref.current.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+      if (!text1Ref.current || !text2Ref.current) return;
 
-        fraction = 1 - fraction;
-        text1Ref.current.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
-        text1Ref.current.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
-      }
+      // Apply blur and opacity to the appearing text
+      text2Ref.current.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+      text2Ref.current.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
+
+      // Apply inverse effect to disappearing text
+      const inverseFraction = 1 - fraction;
+      text1Ref.current.style.filter = `blur(${Math.min(8 / inverseFraction - 8, 100)}px)`;
+      text1Ref.current.style.opacity = `${Math.pow(inverseFraction, 0.4) * 100}%`;
     };
 
-    const doCooldown = () => {
-      morph = 0;
-      if (text1Ref.current && text2Ref.current) {
-        text2Ref.current.style.filter = "";
-        text2Ref.current.style.opacity = "100%";
-        text1Ref.current.style.filter = "";
-        text1Ref.current.style.opacity = "0%";
-      }
-    };
+    const animate = (currentTime: number) => {
+      const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+      lastTime = currentTime;
+      
+      // Update progress based on current phase
+      if (isMorphing) {
+        progress += deltaTime;
+        const fraction = Math.min(progress / morphTime, 1);
+        setMorph(fraction);
 
-    const doMorph = () => {
-      morph -= cooldown;
-      cooldown = 0;
-      let fraction = morph / morphTime;
-
-      if (fraction > 1) {
-        cooldown = cooldownTime;
-        fraction = 1;
-      }
-
-      setMorph(fraction);
-    };
-
-    function animate() {
-      requestAnimationFrame(animate);
-      const newTime = new Date();
-      const shouldIncrementIndex = cooldown > 0;
-      const dt = (newTime.getTime() - time.getTime()) / 1000;
-      time = newTime;
-
-      cooldown -= dt;
-
-      if (cooldown <= 0) {
-        if (shouldIncrementIndex) {
+        // Check if morph phase is complete
+        if (progress >= morphTime) {
+          isMorphing = false;
+          progress = 0;
+        }
+      } else {
+        progress += deltaTime;
+        
+        // Check if cooldown phase is complete
+        if (progress >= cooldownTime) {
+          isMorphing = true;
+          progress = 0;
           textIndex = (textIndex + 1) % texts.length;
+
+          // Update text content for next cycle
           if (text1Ref.current && text2Ref.current) {
-            text1Ref.current.textContent = texts[textIndex % texts.length];
+            text1Ref.current.textContent = texts[textIndex];
             text2Ref.current.textContent = texts[(textIndex + 1) % texts.length];
           }
         }
-        doMorph();
-      } else {
-        doCooldown();
       }
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    // Initialize text content
+    if (text1Ref.current && text2Ref.current) {
+      text1Ref.current.textContent = texts[0];
+      text2Ref.current.textContent = texts[1] || texts[0];
+      text1Ref.current.style.opacity = "100%";
+      text2Ref.current.style.opacity = "0%";
     }
 
-    animate();
+    // Start animation
+    animationId = requestAnimationFrame(animate);
 
+    // Cleanup
     return () => {
-      // Cleanup function if needed
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
     };
-  }, [texts, morphTime, cooldownTime]);
+  }, [texts, morphTime, cooldownTime]); // Removed frameTime from dependencies
 
   return (
     <div className={cn("relative", className)}>
@@ -115,7 +119,7 @@ export function GooeyText({
         <span
           ref={text1Ref}
           className={cn(
-            "absolute inline-block select-none text-center text-6xl md:text-[60pt]",
+            "absolute inline-block select-none text-center",
             "text-foreground",
             textClassName
           )}
@@ -123,7 +127,7 @@ export function GooeyText({
         <span
           ref={text2Ref}
           className={cn(
-            "absolute inline-block select-none text-center text-6xl md:text-[60pt]",
+            "absolute inline-block select-none text-center",
             "text-foreground",
             textClassName
           )}

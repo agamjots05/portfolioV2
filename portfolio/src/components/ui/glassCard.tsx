@@ -10,12 +10,28 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function GlassCard({ 
   children, 
-  paddingX = 24,
-  paddingY = 24,
+  paddingX,
+  paddingY,
   className,
   style,
   ...props 
 }: GlassCardProps) {
+  // Detect if Tailwind padding classes are present on this element
+  const hasPaddingClass = Boolean(
+    className && (
+      className.includes(" p-") ||
+      className.includes(" px-") ||
+      className.includes(" py-") ||
+      className.includes(" pl-") ||
+      className.includes(" pr-") ||
+      className.includes(" pt-") ||
+      className.includes(" pb-") ||
+      className.startsWith("p-") ||
+      className.startsWith("px-") ||
+      className.startsWith("py-")
+    )
+  )
+
   return (
     <div
       className={`rounded-xl transition-all duration-300 text-white ${className || ''}`}
@@ -24,22 +40,19 @@ export function GlassCard({
         background: 'rgba(255, 255, 255,0.01)',
         backdropFilter: 'blur(1px) saturate(110%) contrast(100%)',
         WebkitBackdropFilter: 'blur(16px) saturate(180%) contrast(120%)',
-        
-        // Subtle border for definition
-        
         // Enhanced shadow for depth
         boxShadow: `
           0 8px 32px rgba(0, 0, 0, 0.3),
           inset 0 1px 0 rgba(255, 255, 255, 0.2),
           inset 0 -1px 0 rgba(255, 255, 255, 0.1)
         `,
-        
-        // Explicit padding using inline styles
-        paddingLeft: `${paddingX}px`,
-        paddingRight: `${paddingX}px`,
-        paddingTop: `${paddingY}px`,
-        paddingBottom: `${paddingY}px`,
-        
+        // Only apply inline padding if no Tailwind padding classes are present
+        ...(hasPaddingClass
+          ? {}
+          : {
+              ...(paddingX !== undefined ? { paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` } : {}),
+              ...(paddingY !== undefined ? { paddingTop: `${paddingY}px`, paddingBottom: `${paddingY}px` } : {}),
+            }),
         ...style,
       }}
       {...props}
